@@ -80,14 +80,14 @@ FORCE_FIX=0
 
 checkGIT
 if [[ $MAIN_REPO_URL == "" ]]; then
-    MAIN_REPO_URL="http://github.com/Cloudrexx/cloudrexx"
+    MAIN_REPO_URL="https://github.com/Cloudrexx/cloudrexx"
 fi
 if [[ $GIT_BRANCH == "" ]]; then
     GIT_BRANCH="master"
 fi
 
 if [[ $TOOLS_REPO_URL == "" ]]; then
-    TOOLS_REPO_URL="https://github.com/Cloudrexx/dev-tools"
+    TOOLS_REPO_URL="https://github.com/Cloudrexx/scripts"
 fi
 TOOLS_REPO_FOLDER="${TOOLS_REPO_URL##*/}"
 
