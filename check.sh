@@ -114,9 +114,11 @@ function checkPHP () {
 }
 
 function installPHP () {
-    echo "Installing PHP..."
+    echo "Installing PHP 5.6..."
+    # add php repo, because since ubuntu 16.4 php 5.6 is no longer standard
+    sudo add-apt-repository ppa:ondrej/php
     sudo apt-get update
-    sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt
+    sudo apt-get install php5.6 libapache2-mod-php5.6 php5.6-mcrypt
     INSTALL_PHP=0
     checkPHP 1
 }
