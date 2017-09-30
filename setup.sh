@@ -93,19 +93,32 @@ fi
 APACHE_ROOT=$(apache2ctl -S | grep "DocumentRoot" | cut -d "\"" -f 2)
 REWRITE_BASE=${PWD#$APACHE_ROOT}
 REWRITE_OFFSET_CONFIG=$REWRITE_BASE
+
+USE_SAME_MYSQL_USER=0
+while [[ $USE_SAME_MYSQL_USER != 1 ]]
+do
+
 echo "Please enter USERNAME which will create database: "
 read DB_ADMIN_USER
 
 echo "Please enter PASSWORD of the user which creates the database: "
 read -s DB_ADMIN_PASS
 
+if ! mysql -u $DB_ADMIN_USER -p$DB_ADMIN_PASS  -e ";" ; then
+       echo "THE PASSWORD YOU ENTERED IS NOT CORRECT, PLEASE TRY AGAIN"
+else
+    echo "Login correct: Do you want to use $DB_ADMIN_USER to access your database?"
+    echo "1 - Yes I will"
+    echo "enter - no I will use another existing one"
+    read USE_SAME_MYSQL_USER
+    echo $USE_SAME_MYSQL_USER
+fi
+done
+
 echo "Please enter NAME FOR DATABASE which will be created: "
 read DB_NAME
 
-echo "Do you want to use $DB_ADMIN_USER to access your database?"
-echo "1 - Yes I will"
-echo "enter - no I will use another existing one"
-read USE_SAME_MYSQL_USER
+
 
 if [[ $USE_SAME_MYSQL_USER == 1 ]]; then
     DB_USER=$DB_ADMIN_USER
