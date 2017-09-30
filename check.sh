@@ -106,7 +106,6 @@ function checkPHP () {
         PHP_VERSION=$(php -r \@phpinfo\(\)\; | grep 'PHP Version' -m 1 | grep -o [[:digit:]]\.[[:digit:]]\.[[:digit:]] -m 1)
         checkVersion $PHP_VERSION $REQUIRED_PHP_VERSION "PHP"
         checkPDO
-        checkPHPModule "apc"
         checkPHPModule "intl"
     fi
     # if PHP is not installed, but we tried to install it, we inform the user, that the installation failed
