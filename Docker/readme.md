@@ -17,6 +17,12 @@ This triggers the execution of cronjobs registered in Contrexx/Cloudrexx.
 ## Proposed setup ##
 If there is no need to use the "-with-mysql" variant, we suggest using the base image to execute PHP. In addition a "-cron" image can be run aside (using the same volumes) in order to make the Cron component working properly.
 
+## Known issues ##
+* The PHP 5.6 images do not support Memcached yet.
+* Socket timeout is set to 600s which is way too high.
+* PHP is rebuilt 3 times during image build. This could be reduced to once.
+* PHP 7.1 images are missing.
+
 ## (Re-)Build all images ##
 In order to (re-)build all images, the following command can be used (from this directory):
 ```bash
