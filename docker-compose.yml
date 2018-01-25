@@ -1,0 +1,29 @@
+# This file is used as a template for ./cx init
+# The "image" option always needs to be right after the service name. Otherwise
+# ./cx will not be able to re-extract values from the parsed file.
+version: '2'
+services:
+  web:
+    image: "<php-image>"
+    ports:
+      - "<port>:80"
+    volumes:
+      - .:/var/www/html
+  db:
+    image: "<db-image>"
+    command: --sql-mode="NO_ENGINE_SUBSTITUTION"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=dev
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - 8234:80
+  usercache:
+    image: "memcached"
