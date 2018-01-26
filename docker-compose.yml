@@ -4,11 +4,13 @@
 version: '2'
 services:
   web:
-    image: "<php-image>"
+    image: "<php-image>"<novhost>
     ports:
-      - "<port>:80"
+      - "<port>:80"</novhost>
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html<vhost>
+    environment:
+      - VIRTUAL_HOST=<hostname></vhost>
   db:
     image: "<db-image>"
     command: --sql-mode="NO_ENGINE_SUBSTITUTION"
@@ -22,8 +24,12 @@ services:
       - PMA_HOST=db
     depends_on:
       - db
-    restart: always
+    restart: always<vhost>
     ports:
-      - 8234:80
+      - 8234:80</vhost>
   usercache:
-    image: "memcached"
+    image: "memcached"<vhost>
+networks:
+  default:
+    external:
+      name: <proxy-network></vhost>
