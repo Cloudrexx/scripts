@@ -22,11 +22,14 @@ services:
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=123456<vhost>
+      - VIRTUAL_HOST=phpma.<hostname></vhost>
     depends_on:
       - db
-    restart: always<vhost>
+    restart: always<novhost>
     ports:
-      - 8234:80</vhost>
+      - 8234:80</novhost>
   usercache:
     image: "memcached"<vhost>
 networks:
