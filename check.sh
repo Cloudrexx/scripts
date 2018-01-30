@@ -88,12 +88,14 @@ function installApache () {
     INSTALL_APACHE=0
     checkApache 1
 }
+
 function checkFolder () {
     APACHE_ROOT=$(apache2ctl -S | grep "DocumentRoot" | cut -d "\"" -f 2)
     if [[ ${PWD##$APACHE_ROOT} == $PWD ]]; then
         writeReport "NOTE" "Your installing folder is not inside apache root. You need to create a vhost that it works"
     fi
 }
+
 function checkPHP () {
     type php >/dev/null 2>&1 && PHP_INSTALLED=1 || PHP_INSTALLED=0
     echo "Checking php..."
@@ -104,7 +106,7 @@ function checkPHP () {
         PHP_VERSION=$(php -r \@phpinfo\(\)\; | grep 'PHP Version' -m 1 | grep -o [[:digit:]]\.[[:digit:]]\.[[:digit:]] -m 1)
         checkVersion $PHP_VERSION $REQUIRED_PHP_VERSION "PHP"
         checkPDO
-        checkAPC
+        checkPHPModule "intl"
     fi
     # if PHP is not installed, but we tried to install it, we inform the user, that the installation failed
     [[ $INSTALL_PHP = 1 && $1 == 1 ]] && { writeReport "PHP" "could not be installed, please do it manually"; exit; }
@@ -112,9 +114,11 @@ function checkPHP () {
 }
 
 function installPHP () {
-    echo "Installing PHP..."
+    echo "Installing PHP 5.6..."
+    # add php repo, because since ubuntu 16.4 php 5.6 is no longer standard
+    sudo add-apt-repository ppa:ondrej/php
     sudo apt-get update
-    sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt
+    sudo apt-get install php5.6 libapache2-mod-php5.6 php5.6-mcrypt
     INSTALL_PHP=0
     checkPHP 1
 }
@@ -137,7 +141,8 @@ function checkMySQL () {
 function installMySQL () {
     echo "Installing MySQL..."
     sudo apt-get update
-    sudo apt-get install mysql-server libapache2-mod-auth-mysql php5-mysql
+    sudo apt-get install mysql-server
+    installPHPModule mysql
     sudo mysql_install_db
     sudo /usr/bin/mysql_secure_installation
     INSTALL_MYSQL=0
@@ -156,29 +161,30 @@ function checkPDO () {
     fi
 }
 
-function checkAPC () {
-    echo "Checking apc..."
-    [[ $(php -m | grep "apc") != "" ]] && APC_INSTALLED=1 || APC_INSTALLED=0
-    if [[ $APC_INSTALLED != 1 ]]; then
-        writeReport "Note" "APC is not installed (optional)"
-        # if force fix is true, we save the information that we want to install apc, otherwise we ask the user if we should install it
-        [[ $FORCE_FIX == 1 ]] && INSTALL_APC=1 || { outputNotInstalledMessage "apc"; read INSTALL_APC; }
+# param $1: the name of the php module without prefix 'phpX.Y-' (e.g for php5.6-intl moduleName is intl)
+# param $2: should be 1 if the module was installed otherwise 0
+function checkPHPModule () {
+    echo "Checking $1"
+    [[ $(php -m | grep "$1") != "" ]] && MODULE_INSTALLED=1 || MODULE_INSTALLED=0
+    if [[ $MODULE_INSTALLED != 1 ]]; then
+        echo "Note" "$1 is not installed"
+        # if force fix is true, we save the information that we want to install module, otherwise we ask the user if we should install it
+        [[ $FORCE_FIX == 1 ]] && INSTALL_MODULE=1 || { outputNotInstalledMessage $1; read INSTALL_MODULE; }
         else
-        writeReport "APC" "installed (optional)"
+        echo "$1" "installed"
     fi
-    # if APC is not installed, but we tried to install it, we inform the user, that the installation failed
-    # we do not exit because apc is optional
-    [[ $INSTALL_APC == 1 && $1 == 1 ]] && writeReport "APC" "could not be installed, please do it manually";
-    [[ $INSTALL_APC == 1 && $1 != 1 ]] && installAPC
+    # if module is not installed, but we tried to install it, we inform the user, that the installation failed
+    [[ $INSTALL_MODULE == 1 && $2 == 1 ]] && writeReport "$1" "could not be installed, please do it manually";
+    [[ $INSTALL_MODULE == 1 && $2 != 1 ]] && installPHPModule $1
 }
 
-function installAPC () {
-    echo "Installing apc..."
+function installPHPModule () {
+    echo "Installing $1..."
     sudo apt-get update
-    sudo apt-get install php-apc
+    sudo apt-get install php$(php -r \@phpinfo\(\)\; | grep 'PHP Version' -m 1 | grep -om1 [[:digit:]]\.[[:digit:]] | head -1)-$1
     service apache2 restart
-    INSTALL_APC=0
-    checkAPC 1
+    INSTALL_MODULE=0
+    checkPHPModule $1 1
 }
 
 function checkPostfix () {
