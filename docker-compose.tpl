@@ -11,11 +11,19 @@ services:
       - .:/var/www/html<vhost>
     environment:
       - VIRTUAL_HOST=<hostname></vhost>
+    depends_on:
+      - db
+      - usercache
+    networks:
+      - front-end
+      - back-end
   db:
     image: "<db-image>"
     command: --sql-mode="NO_ENGINE_SUBSTITUTION"
     volumes:
       - ./tmp/data/db:/var/lib/mysql
+    networks:
+      - back-end
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=dev
@@ -27,14 +35,19 @@ services:
       - PMA_USER=root
       - PMA_PASSWORD=123456<vhost>
       - VIRTUAL_HOST=phpma.<hostname></vhost>
+    networks:
+      - front-end
+      - back-end
     depends_on:
       - db
     restart: always<novhost>
     ports:
       - 8234:80</novhost>
   usercache:
-    image: "memcached"<vhost>
+    image: "memcached"
+    networks:
+      - back-end
 networks:
   default:
     external:
-      name: <proxy-network></vhost>
+      name: <proxy-network>
