@@ -48,6 +48,7 @@ services:
     networks:
       - back-end
 networks:
-  default:
+  front-end:
     external:
       name: <proxy-network>
+  back-end:
