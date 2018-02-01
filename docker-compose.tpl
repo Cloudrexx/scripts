@@ -8,10 +8,8 @@ services:
     ports:
       - "<port>:80"</novhost>
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html<vhost>
     environment:
-      - APACHE_RUN_USER=$UID
-      - APACHE_RUN_GROUP=$GROUPS<vhost>
       - VIRTUAL_HOST=<hostname></vhost>
   db:
     image: "<db-image>"
