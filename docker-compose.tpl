@@ -21,7 +21,7 @@ services:
     image: "<db-image>"
     command: --sql-mode="NO_ENGINE_SUBSTITUTION"
     volumes:
-      - ./tmp/data/db:/var/lib/mysql
+      - db-data:/var/lib/mysql
     networks:
       - back-end
     environment:
@@ -52,3 +52,5 @@ networks:
     external:
       name: <proxy-network>
   back-end:
+volumes:
+  db-data:
