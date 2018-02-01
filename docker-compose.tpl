@@ -8,12 +8,16 @@ services:
     ports:
       - "<port>:80"</novhost>
     volumes:
-      - .:/var/www/html<vhost>
+      - .:/var/www/html
     environment:
+      - APACHE_RUN_USER=$UID
+      - APACHE_RUN_GROUP=$GROUPS<vhost>
       - VIRTUAL_HOST=<hostname></vhost>
   db:
     image: "<db-image>"
     command: --sql-mode="NO_ENGINE_SUBSTITUTION"
+    volumes:
+      - ./tmp/data/db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=dev
