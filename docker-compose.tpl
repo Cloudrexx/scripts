@@ -4,8 +4,8 @@
 version: '2'
 services:
   web:
-    hostname: "<hostname>"
     image: "<php-image>"<novhost>
+    hostname: "<hostname>"
     ports:
       - "<port>:80"</novhost>
     volumes:
@@ -29,8 +29,8 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=dev
   phpmyadmin:
-    hostname: "phpma.<hostname>"
     image: phpmyadmin/phpmyadmin
+    hostname: "phpma.<hostname>"
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=db
