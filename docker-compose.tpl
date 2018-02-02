@@ -50,9 +50,9 @@ services:
     networks:
       - back-end
 networks:
-  front-end:
+  front-end:<vhost>
     external:
-      name: <proxy-network>
+      name: <proxy-network></vhost>
   back-end:
 volumes:
   db-data:
