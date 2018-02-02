@@ -4,6 +4,7 @@
 version: '2'
 services:
   web:
+    hostname: "<hostname>"
     image: "<php-image>"<novhost>
     ports:
       - "<port>:80"</novhost>
@@ -28,6 +29,7 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=dev
   phpmyadmin:
+    hostname: "phpma.<hostname>"
     image: phpmyadmin/phpmyadmin
     environment:
       - PMA_ARBITRARY=1
