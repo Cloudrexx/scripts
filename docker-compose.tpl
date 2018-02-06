@@ -4,8 +4,8 @@
 version: '2'
 services:
   web:
-    hostname: "<hostname>"
     image: "<php-image>"<novhost>
+    hostname: "<hostname>"
     ports:
       - "<port>:80"</novhost>
     volumes:
@@ -20,7 +20,7 @@ services:
       - back-end
   db:
     image: "<db-image>"
-    command: --sql-mode="NO_ENGINE_SUBSTITUTION"
+    command: --sql-mode="NO_ENGINE_SUBSTITUTION" --character-set-server=utf8 --collation-server=utf8_general_ci
     volumes:
       - db-data:/var/lib/mysql
     networks:
@@ -29,8 +29,8 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=dev
   phpmyadmin:
-    hostname: "phpma.<hostname>"
     image: phpmyadmin/phpmyadmin
+    hostname: "phpma.<hostname>"
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=db
@@ -50,9 +50,9 @@ services:
     networks:
       - back-end
 networks:
-  front-end:
+  front-end:<vhost>
     external:
-      name: <proxy-network>
+      name: <proxy-network></vhost>
   back-end:
 volumes:
   db-data:
