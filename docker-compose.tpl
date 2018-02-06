@@ -9,7 +9,7 @@ services:
     ports:
       - "<port>:80"</novhost>
     volumes:
-      - .:/var/www/html<vhost>
+      - <cd>:/var/www/html<vhost>
     environment:
       - VIRTUAL_HOST=<hostname></vhost>
     depends_on:
