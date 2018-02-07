@@ -5,12 +5,13 @@ RUN bash -c "apt update && apt install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
-        libpng12-dev \
+        libpng-dev \
         libicu-dev \
     # PHP extensions
         && pecl install memcached && echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini \
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd \
-        && docker-php-ext-install -j$(nproc) iconv mcrypt opcache mysqli pdo_mysql intl bcmath \
+        && docker-php-ext-install -j$(nproc) iconv opcache mysqli pdo_mysql intl bcmath \
+        && yes '' | pecl install -f mcrypt && echo 'extension=mcrypt.so' > /usr/local/etc/php/conf.d/mcrypt.ini \
     # PHP configuration
         && echo 'date.timezone = \"UTC\"' >> /usr/local/etc/php/php.ini \
         && echo 'default_socket_timeout = 600' >> /usr/local/etc/php/php.ini \
