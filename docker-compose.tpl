@@ -4,8 +4,8 @@
 version: '2'
 services:
   web:
-    image: "<php-image>"<novhost>
-    hostname: "<hostname>"
+    image: "<php-image>"
+    hostname: "<hostname>"<novhost>
     ports:
       - "<port>:80"</novhost>
     volumes:
