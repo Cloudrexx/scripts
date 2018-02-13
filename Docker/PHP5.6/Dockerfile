@@ -26,3 +26,6 @@ RUN bash -c "apt update && apt install -y \
             libicu-dev \
         && apt-get clean \
         && rm -rf /tmp/pear"
+COPY clx-docker-php-entrypoint /usr/local/bin/
+ENTRYPOINT ["clx-docker-php-entrypoint"]
+CMD ["apache2-foreground"]
