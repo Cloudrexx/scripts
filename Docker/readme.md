@@ -14,7 +14,6 @@ If there is no need to use the "-with-mysql" variant, we suggest using the base 
 * The PHP 5.6 images do not support Memcached yet.
 * Socket timeout is set to 600s which is way too high.
 * PHP is rebuilt 3 times during image build. This could be reduced to once.
-* PHP 7.2 images are missing.
 
 ## (Re-)Build all images ##
 In order to (re-)build all images, the following command can be used (from this directory):
