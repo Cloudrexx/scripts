@@ -20,7 +20,7 @@ services:
       - back-end
   db:
     image: "<db-image>"
-    command: --sql-mode="NO_ENGINE_SUBSTITUTION" --character-set-server=utf8 --collation-server=utf8_general_ci
+    command: --sql-mode="NO_ENGINE_SUBSTITUTION,NO_AUTO_VALUE_ON_ZERO" --character-set-server=utf8 --collation-server=utf8_general_ci
     volumes:
       - db-data:/var/lib/mysql
     networks:
