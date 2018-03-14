@@ -8,7 +8,7 @@ RUN bash -c "apt update && apt install -y \
         libicu-dev \
     # PHP extensions
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd \
-        && docker-php-ext-install -j$(nproc) iconv mcrypt opcache mysqli pdo_mysql intl bcmath \
+        && docker-php-ext-install -j$(nproc) iconv mcrypt mysql opcache mysqli pdo_mysql intl bcmath \
     # PHP configuration
         && echo 'date.timezone = \"UTC\"' >> /usr/local/etc/php/php.ini \
         && echo 'default_socket_timeout = 600' >> /usr/local/etc/php/php.ini \
