@@ -17,6 +17,7 @@ RUN bash -c "apt update && apt install -y \
         && echo 'default_socket_timeout = 600' >> /usr/local/etc/php/php.ini \
     # Apache configuration
         && a2enmod rewrite \
+        && a2enmod expires \
         && a2enmod headers \
         && echo \"UseCanonicalName On\" >> /etc/apache2/apache2.conf \
     # Cleanup
