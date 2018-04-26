@@ -12,6 +12,7 @@ services:
       - <cd>:/var/www/html<vhost>
     environment:
       - VIRTUAL_HOST=<hostname></vhost>
+      - HTTPS_METHOD=noredirect
     depends_on:
       - db
       - usercache
