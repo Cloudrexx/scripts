@@ -6,12 +6,14 @@ RUN bash -c "apt update && apt install -y \
         libmcrypt-dev \
         libpng12-dev \
         libicu-dev \
+        ssmtp \
     # PHP extensions
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd \
         && docker-php-ext-install -j$(nproc) iconv mcrypt mysql opcache mysqli pdo_mysql intl bcmath \
     # PHP configuration
         && echo 'date.timezone = \"UTC\"' >> /usr/local/etc/php/php.ini \
         && echo 'default_socket_timeout = 600' >> /usr/local/etc/php/php.ini \
+        && echo 'sendmail_path = /usr/sbin/ssmtp -t' >> /usr/local/etc/php/php.ini \
     # Apache configuration
         && a2enmod rewrite \
         && a2enmod expires \
@@ -27,6 +29,7 @@ RUN bash -c "apt update && apt install -y \
             libicu-dev \
         && apt-get clean \
         && rm -rf /tmp/pear"
+COPY clx-docker-ssmtp-config /etc/ssmtp/ssmtp.conf
 COPY clx-docker-php-entrypoint /usr/local/bin/
 ENTRYPOINT ["clx-docker-php-entrypoint"]
 CMD ["apache2-foreground"]

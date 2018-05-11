@@ -8,6 +8,7 @@ RUN bash -c "apt update && apt install -y \
         libpng-dev \
         libicu-dev \
         zlib1g-dev \
+        ssmtp \
     # PHP extensions
         && pecl install memcached && echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini \
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd \
@@ -16,6 +17,7 @@ RUN bash -c "apt update && apt install -y \
     # PHP configuration
         && echo 'date.timezone = \"UTC\"' >> /usr/local/etc/php/php.ini \
         && echo 'default_socket_timeout = 600' >> /usr/local/etc/php/php.ini \
+        && echo 'sendmail_path = /usr/sbin/ssmtp -t' >> /usr/local/etc/php/php.ini \
     # Apache configuration
         && a2enmod rewrite \
         && a2enmod expires \
@@ -33,6 +35,7 @@ RUN bash -c "apt update && apt install -y \
             zlib1g-dev \
         && apt-get clean \
         && rm -rf /tmp/pear"
+COPY clx-docker-ssmtp-config /etc/ssmtp/ssmtp.conf
 COPY clx-docker-php-entrypoint /usr/local/bin/
 ENTRYPOINT ["clx-docker-php-entrypoint"]
 CMD ["apache2-foreground"]

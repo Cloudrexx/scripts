@@ -5,6 +5,7 @@ RUN bash -c "apt update && apt install -y \
         libjpeg62-turbo-dev \
         libpng12-dev \
         libicu-dev \
+        ssmtp \
     # Fixes
         && mkdir /usr/include/freetype2/freetype \
         && ln -s /usr/include/freetype2/freetype.h /usr/include/freetype2/freetype/freetype.h \
@@ -16,6 +17,7 @@ RUN bash -c "apt update && apt install -y \
     # PHP configuration
         && echo 'date.timezone = \"UTC\"' >> /etc/php5/apache2/php.ini \
         && echo 'default_socket_timeout = 600' >> /etc/php5/apache2/php.ini \
+        && echo 'sendmail_path = /usr/sbin/ssmtp -t' >> /etc/php5/apache2/php.ini \
     # Apache configuration
         && a2enmod rewrite \
         && a2enmod expires \
@@ -30,3 +32,4 @@ RUN bash -c "apt update && apt install -y \
             libicu-dev \
         && apt-get clean \
         && rm -rf /tmp/pear"
+COPY clx-docker-ssmtp-config /etc/ssmtp/ssmtp.conf
