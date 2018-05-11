@@ -29,6 +29,22 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=dev
+  mail:
+    image: mailhog/mailhog
+    hostname: "mail.<hostname>"<novhost>
+    ports:
+      - "8025:8025"</novhost>
+    user: root
+    environment:
+      - MH_SMTP_BIND_ADDR=0.0.0.0:25<vhost>
+      - MH_API_BIND_ADDR=0.0.0.0:80
+      - MH_UI_BIND_ADDR=0.0.0.0:80
+      - VIRTUAL_HOST=mail.<hostname>
+    expose:
+      - 80</vhost>
+    networks:
+      - front-end
+      - back-end
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     hostname: "phpma.<hostname>"
