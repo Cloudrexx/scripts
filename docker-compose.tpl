@@ -25,6 +25,7 @@ services:
     command: --sql-mode="NO_ENGINE_SUBSTITUTION,NO_AUTO_VALUE_ON_ZERO" --character-set-server=utf8 --collation-server=utf8_general_ci
     volumes:
       - db-data:/var/lib/mysql
+      - ./tmp/db:/tmp/import
     networks:
       - back-end
     environment:
