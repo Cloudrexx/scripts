@@ -13,6 +13,7 @@ services:
     environment:
       - VIRTUAL_HOST=<hostname></vhost>
       - HTTPS_METHOD=noredirect
+    restart: always
     depends_on:
       - db
       - usercache
@@ -29,6 +30,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=dev
+    restart: always
   mail:
     image: mailhog/mailhog
     hostname: "mail.<hostname>"<novhost>
@@ -40,6 +42,7 @@ services:
       - MH_API_BIND_ADDR=0.0.0.0:80
       - MH_UI_BIND_ADDR=0.0.0.0:80
       - VIRTUAL_HOST=mail.<hostname>
+    restart: always
     expose:
       - 80</vhost>
     networks:
@@ -64,6 +67,7 @@ services:
       - 8234:80</novhost>
   usercache:
     image: "memcached"
+    restart: always
     networks:
       - back-end
 networks:
