@@ -4,7 +4,7 @@ RUN bash -c "apt update && apt install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
-        libpng12-dev \
+        libpng-dev \
         libicu-dev \
         ssmtp \
     # PHP extensions
