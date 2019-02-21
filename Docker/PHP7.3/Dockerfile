@@ -12,7 +12,7 @@ RUN bash -c "apt update && apt install -y \
         libzip-dev \
         ssmtp \
     # PHP extensions
-        #&& pecl install memcached && echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini \
+        && pecl install memcached && echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini \
         && docker-php-ext-configure exif && docker-php-ext-install exif && docker-php-ext-enable exif \
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd \
         && docker-php-ext-install -j$(nproc) iconv opcache mysqli pdo_mysql intl bcmath zip \
