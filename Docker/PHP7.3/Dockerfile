@@ -1,4 +1,4 @@
-FROM php:7.0-apache
+FROM php:7.3-apache
 RUN bash -c "apt update && apt install -y \
     # Ubuntu packages
         exiftool \
@@ -9,12 +9,14 @@ RUN bash -c "apt update && apt install -y \
         libpng-dev \
         libicu-dev \
         zlib1g-dev \
+        libzip-dev \
         ssmtp \
     # PHP extensions
         && pecl install memcached && echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini \
         && docker-php-ext-configure exif && docker-php-ext-install exif && docker-php-ext-enable exif \
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd \
-        && docker-php-ext-install -j$(nproc) iconv mcrypt opcache mysqli pdo_mysql intl bcmath zip \
+        && docker-php-ext-install -j$(nproc) iconv opcache mysqli pdo_mysql intl bcmath zip \
+        && yes '' | pecl install -f mcrypt && echo 'extension=mcrypt.so' > /usr/local/etc/php/conf.d/mcrypt.ini \
     # PHP configuration
         && echo 'date.timezone = \"UTC\"' >> /usr/local/etc/php/php.ini \
         && echo 'default_socket_timeout = 600' >> /usr/local/etc/php/php.ini \
@@ -34,6 +36,7 @@ RUN bash -c "apt update && apt install -y \
             libjpeg62-turbo-dev \
             libicu-dev \
             zlib1g-dev \
+            libzip-dev \
         && apt-get clean \
         && rm -rf /tmp/pear"
 COPY clx-docker-ssmtp-config /etc/ssmtp/ssmtp.conf

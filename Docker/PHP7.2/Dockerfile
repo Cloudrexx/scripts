@@ -1,6 +1,7 @@
 FROM php:7.2-apache
 RUN bash -c "apt update && apt install -y \
     # Ubuntu packages
+        exiftool \
         libmemcached-dev \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -11,6 +12,7 @@ RUN bash -c "apt update && apt install -y \
         ssmtp \
     # PHP extensions
         && pecl install memcached && echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini \
+        && docker-php-ext-configure exif && docker-php-ext-install exif && docker-php-ext-enable exif \
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd \
         && docker-php-ext-install -j$(nproc) iconv opcache mysqli pdo_mysql intl bcmath zip \
         && yes '' | pecl install -f mcrypt && echo 'extension=mcrypt.so' > /usr/local/etc/php/conf.d/mcrypt.ini \
@@ -27,7 +29,7 @@ RUN bash -c "apt update && apt install -y \
         && apt-get autoremove -y \
         && apt-get remove -y \
             libfreetype6-dev \
-            libpng12-dev \
+            libpng-dev \
             libmemcached-dev \
             libmcrypt-dev \
             libjpeg62-turbo-dev \
