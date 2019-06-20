@@ -6,6 +6,7 @@ RUN apt update && apt install -y \
     software-properties-common \
     wget \
     mysql-client \
+    bsdmainutils \
     docker \
     docker-compose \
     vim \
