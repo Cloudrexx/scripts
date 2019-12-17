@@ -1,0 +1,4 @@
+account         mailhog
+host            mail
+
+account default : mailhog

@@ -20,7 +20,7 @@ RUN bash -c "apt update && apt install -y \
     # PHP configuration
         && echo 'date.timezone = \"UTC\"' >> /usr/local/etc/php/php.ini \
         && echo 'default_socket_timeout = 600' >> /usr/local/etc/php/php.ini \
-        && echo 'sendmail_path = /usr/sbin/msmtp -t' >> /usr/local/etc/php/php.ini \
+        && echo 'sendmail_path = /usr/sbin/msmtp -t --read-envelope-from' >> /usr/local/etc/php/php.ini \
     # Apache configuration
         && a2enmod rewrite \
         && a2enmod expires \
@@ -39,7 +39,7 @@ RUN bash -c "apt update && apt install -y \
             libzip-dev \
         && apt-get clean \
         && rm -rf /tmp/pear"
-COPY clx-docker-ssmtp-config /etc/msmtp/msmtp.conf
+COPY clx-docker-msmtp-config /etc/msmtprc
 COPY clx-docker-php-entrypoint /usr/local/bin/
 ENTRYPOINT ["clx-docker-php-entrypoint"]
 CMD ["apache2-foreground"]
