@@ -8,6 +8,7 @@ RUN bash -c "apt update && apt install -y \
         libicu-dev \
         libzip-dev \
         ssmtp \
+        ssl-cert \
     # PHP extensions
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install -j$(nproc) gd \
         && docker-php-ext-install -j$(nproc) iconv mcrypt mysql opcache mysqli pdo_mysql intl bcmath zip \
@@ -19,7 +20,9 @@ RUN bash -c "apt update && apt install -y \
         && a2enmod rewrite \
         && a2enmod expires \
         && a2enmod headers \
+        && a2enmod ssl \
         && echo \"UseCanonicalName On\" >> /etc/apache2/apache2.conf \
+        && ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf \
     # Cleanup
         && apt-get autoremove -y \
         && apt-get remove -y \
@@ -33,5 +36,6 @@ RUN bash -c "apt update && apt install -y \
         && rm -rf /tmp/pear"
 COPY clx-docker-ssmtp-config /etc/ssmtp/ssmtp.conf
 COPY clx-docker-php-entrypoint /usr/local/bin/
+EXPOSE 443
 ENTRYPOINT ["clx-docker-php-entrypoint"]
 CMD ["apache2-foreground"]
