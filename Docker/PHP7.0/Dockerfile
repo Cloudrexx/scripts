@@ -10,6 +10,7 @@ RUN bash -c "apt update && apt install -y \
         libicu-dev \
         zlib1g-dev \
         ssmtp \
+        ssl-cert \
     # PHP extensions
         && pecl install memcached && echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini \
         && docker-php-ext-configure exif && docker-php-ext-install exif && docker-php-ext-enable exif \
@@ -23,7 +24,9 @@ RUN bash -c "apt update && apt install -y \
         && a2enmod rewrite \
         && a2enmod expires \
         && a2enmod headers \
+        && a2enmod ssl \
         && echo \"UseCanonicalName On\" >> /etc/apache2/apache2.conf \
+        && ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf \
     # Cleanup
         && apt-get autoremove -y \
         && apt-get remove -y \
@@ -38,5 +41,6 @@ RUN bash -c "apt update && apt install -y \
         && rm -rf /tmp/pear"
 COPY clx-docker-ssmtp-config /etc/ssmtp/ssmtp.conf
 COPY clx-docker-php-entrypoint /usr/local/bin/
+EXPOSE 443
 ENTRYPOINT ["clx-docker-php-entrypoint"]
 CMD ["apache2-foreground"]

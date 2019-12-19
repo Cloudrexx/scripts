@@ -6,6 +6,7 @@ RUN bash -c "apt update && apt install -y \
         libpng12-dev \
         libicu-dev \
         ssmtp \
+        ssl-cert \
     # Fixes
         && mkdir /usr/include/freetype2/freetype \
         && ln -s /usr/include/freetype2/freetype.h /usr/include/freetype2/freetype/freetype.h \
@@ -22,7 +23,9 @@ RUN bash -c "apt update && apt install -y \
         && a2enmod rewrite \
         && a2enmod expires \
         && a2enmod headers \
+        && a2enmod ssl \
         && echo \"UseCanonicalName On\" >> /etc/apache2/apache2.conf \
+        && ln -s /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf \
     # Cleanup
         && apt-get autoremove -y \
         && apt-get remove -y \
@@ -33,3 +36,4 @@ RUN bash -c "apt update && apt install -y \
         && apt-get clean \
         && rm -rf /tmp/pear"
 COPY clx-docker-ssmtp-config /etc/ssmtp/ssmtp.conf
+EXPOSE 443
