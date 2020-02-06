@@ -23,8 +23,8 @@ services:
   db:
     image: "<db-image>"
     command: --sql-mode="NO_ENGINE_SUBSTITUTION,NO_AUTO_VALUE_ON_ZERO" --character-set-server=utf8 --collation-server=utf8_general_ci
-    volumes:
-      - db-data:/var/lib/mysql
+    volumes:<persistdb>
+      - db-data:/var/lib/mysql</persistdb>
       - <cd>/tmp/db:/tmp/import
     networks:
       - back-end
@@ -76,5 +76,5 @@ networks:
     external:
       name: <proxy-network></vhost>
   back-end:
-volumes:
-  db-data:
+<persistdb>volumes:
+  db-data:</persistdb>
