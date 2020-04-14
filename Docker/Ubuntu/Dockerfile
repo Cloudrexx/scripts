@@ -12,4 +12,5 @@ RUN apt update && apt install -y \
     vim \
     ftp \
     zip \
+    git \
  && rm -rf /var/lib/apt/lists/*
