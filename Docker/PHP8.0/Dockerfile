@@ -1,4 +1,4 @@
-FROM php:8.0-rc-apache
+FROM php:8.0
 RUN bash -c "apt update"
 RUN bash -c "apt install -y \
     # Ubuntu packages
